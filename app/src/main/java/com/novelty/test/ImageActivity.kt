@@ -98,10 +98,10 @@ class ImageActivity : AppCompatActivity(), View.OnClickListener {
                 return
             }
 
-            if(fileName!!.endsWith(".jpg") || fileName!!.endsWith(".bmp")) {
-                tv_url.text = "Формат не поддерживается"
-                return
-            }
+//            if(fileName!!.endsWith(".jpg") || fileName!!.endsWith(".bmp")) {
+//                tv_url.text = "Формат не поддерживается"
+//                return
+//            }
             //Активируем UI для работы с изображением
             enableUI(true)
         }
