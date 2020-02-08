@@ -38,7 +38,7 @@ class ImageActivity : AppCompatActivity(), View.OnClickListener {
             .usePlaintext()
             .build()
 
-        tv_seek.text = "Scale: $scaleValue"
+        tv_seek.text = "Масштаб: $scaleValue"
 
 
         //Инизиализируем обработчик ImageScaler
