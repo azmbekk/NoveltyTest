@@ -24,6 +24,7 @@ class ImageActivity : AppCompatActivity(), View.OnClickListener {
     private var fileName: String? = null
     private var imageBytes: ByteString? = null
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_image)
@@ -40,6 +41,7 @@ class ImageActivity : AppCompatActivity(), View.OnClickListener {
         tv_seek.text = "Scale: $scaleValue"
 
 
+        //Инизиализируем обработчик ImageScaler
         val stub = ImageScalerGrpc.newBlockingStub(channel)
         scaler = Scaler(stub)
 
@@ -50,7 +52,7 @@ class ImageActivity : AppCompatActivity(), View.OnClickListener {
         bt_scale.setOnClickListener(this)
 
 
-        //Seekbar для наглядного масштабирования
+        //Seekbar для  масштабирования
         seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
             }
@@ -89,9 +91,11 @@ class ImageActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+
     override fun onClick(v: View?) {
         when (v) {
 
+            //Открываем диалог для выбора изображения
             bt_select_image -> {
                 val intent = Intent()
                 intent.type = "image/*"
@@ -99,7 +103,9 @@ class ImageActivity : AppCompatActivity(), View.OnClickListener {
                 startActivityForResult(Intent.createChooser(intent, "Выберите изображение"), 1)
             }
 
+            //Масштабирование изображения
             bt_scale -> {
+                //Запускаем
                 thread {
                     val bitmap = scaler.scaleImage(scaleValue, fileName, imageBytes)
                     runOnUiThread {
@@ -111,23 +117,29 @@ class ImageActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
 
+            //Получение ссылки на масштабированное изображение
             bt_get_url -> {
                 thread {
                     val url = scaler.getUrl(scaleValue, fileName, imageBytes)
 
                     runOnUiThread {
-                        tv_url.text =
-                            if (!url.isNullOrEmpty()) url else "Не удалось получить ссылку"
+                        if (!url.isNullOrEmpty())
+                            tv_url.text = url
+                        else
+                            tv_url.text = "Не удалось получить ссылку"
                     }
                 }
             }
         }
     }
 
+    //Конвертирует изображение в ByteString
     private fun Uri.toByteString(): ByteString {
         return ByteString.readFrom(contentResolver.openInputStream(this))
     }
 
+
+    //Извлекает имя файла из Uri
     private fun Uri.getFileName(): String? {
         return contentResolver.query(
             this,

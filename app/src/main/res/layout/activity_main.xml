@@ -31,7 +31,7 @@
         android:hint="Host"
         android:inputType="textWebEditText"
         android:nextFocusForward="@id/et_port"
-        android:text="test.asb.kz"
+        android:text=""
         app:layout_constraintBottom_toTopOf="@+id/bt_connect"
         app:layout_constraintEnd_toStartOf="@+id/et_port"
         app:layout_constraintStart_toStartOf="parent" />
@@ -45,7 +45,7 @@
         android:ems="10"
         android:hint="port"
         android:inputType="number"
-        android:text="9090"
+        android:text=""
         app:layout_constraintBottom_toTopOf="@+id/bt_connect"
         app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
