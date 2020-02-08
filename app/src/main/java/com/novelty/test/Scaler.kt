@@ -24,7 +24,11 @@ class Scaler(private val stub: ImageScalerGrpc.ImageScalerBlockingStub) {
      *
      * @return В случае успеха возвращает Bitmap. В противном случае возвращает null
      */
-    fun scaleImage(scale: String, fileName: String?, data: ByteString?): Bitmap? {
+    fun scaleImage(scale: String?, fileName: String?, data: ByteString?): Bitmap? {
+
+        if (scale.isNullOrEmpty() || fileName.isNullOrEmpty() || data == null)
+            return null
+
         return try {
             //Формируем GRPC запрос
             val request = ScaleRequest.newBuilder()
@@ -55,6 +59,7 @@ class Scaler(private val stub: ImageScalerGrpc.ImageScalerBlockingStub) {
             null
         }
     }
+
     /**
      * Масштабирует изображение используя GRPC.
      * Функция создает асинхронный запрос и поэтому не должна выполнятся в MainThread во избежания ANR
@@ -65,7 +70,12 @@ class Scaler(private val stub: ImageScalerGrpc.ImageScalerBlockingStub) {
      *
      * @return В случае успеха возвращает String который содержит ссылку на масштабированное изобраение. В противном случае возвращает null
      */
-    fun getUrl(scale: String, fileName: String?, data: ByteString?): String? {
+    fun getUrl(scale: String?, fileName: String?, data: ByteString?): String? {
+
+
+        if (scale.isNullOrEmpty() || fileName.isNullOrEmpty() || data == null)
+            return null
+
 
         //Формируем GRPC запрос
         val request = ScaleRequest.newBuilder()

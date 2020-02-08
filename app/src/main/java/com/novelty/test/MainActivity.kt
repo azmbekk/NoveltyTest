@@ -17,18 +17,18 @@ class MainActivity : AppCompatActivity() {
 
         bt_connect.setOnClickListener {
             val host = et_address.text.toString()
-            val port = et_port.text.toString().toInt()
+            val port = et_port.text.toString()
 
             //чекпоинты для вводимых данных
-            if (host.isEmpty()) {
+            if (host.isNullOrEmpty()) {
                 Snackbar.make(it, "IP адрес не может быть пустым!", Snackbar.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            if (port == 0) {
+            if (port.isNullOrEmpty()) {
                 Snackbar.make(it, "PORT должен быть больше нуля!", Snackbar.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            startImageActivity(host, port)
+            startImageActivity(host, port.toInt())
         }
     }
 

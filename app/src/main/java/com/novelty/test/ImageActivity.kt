@@ -21,8 +21,8 @@ class ImageActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var scaler: Scaler
     private var scaleValue: String = "0.5"
-    private var fileName: String? = null
-    private var imageBytes: ByteString? = null
+    private var fileName: String ?= null
+    private var imageBytes: ByteString?= null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,6 +75,8 @@ class ImageActivity : AppCompatActivity(), View.OnClickListener {
             }
 
         })
+        //Отключаем UI
+        enableUI(false)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -88,6 +90,20 @@ class ImageActivity : AppCompatActivity(), View.OnClickListener {
             //Инициализируем переменные
             fileName = uri.getFileName()
             imageBytes = uri.toByteString()
+
+
+            //Чекпойнты для загружаемого изображения
+            if(fileName == null){
+                tv_url.text = "Не удалось загрузить изображение"
+                return
+            }
+
+            if(fileName!!.endsWith(".jpg") || fileName!!.endsWith(".bmp")) {
+                tv_url.text = "Формат не поддерживается"
+                return
+            }
+            //Активируем UI для работы с изображением
+            enableUI(true)
         }
     }
 
@@ -102,6 +118,7 @@ class ImageActivity : AppCompatActivity(), View.OnClickListener {
                 intent.action = Intent.ACTION_GET_CONTENT
                 startActivityForResult(Intent.createChooser(intent, "Выберите изображение"), 1)
             }
+
 
             //Масштабирование изображения
             bt_scale -> {
@@ -133,8 +150,14 @@ class ImageActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    private fun enableUI(enable: Boolean){
+        bt_scale.isEnabled = enable
+        bt_get_url.isEnabled = enable
+        seekBar.isEnabled = enable
+    }
+
     //Конвертирует изображение в ByteString
-    private fun Uri.toByteString(): ByteString {
+    private fun Uri.toByteString(): ByteString? {
         return ByteString.readFrom(contentResolver.openInputStream(this))
     }
 
