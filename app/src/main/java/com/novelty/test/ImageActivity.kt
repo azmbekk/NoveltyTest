@@ -129,7 +129,7 @@ class ImageActivity : AppCompatActivity(), View.OnClickListener {
                         if (bitmap != null)
                             imageView.setImageBitmap(bitmap)
                         else
-                            tv_url.text = "Не удалось конвертировать приложение"
+                            tv_url.text = "Не удалось масштабировать изображение"
                     }
                 }
             }
