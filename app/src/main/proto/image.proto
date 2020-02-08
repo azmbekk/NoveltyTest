@@ -1,0 +1,69 @@
+syntax = "proto3";
+package novelty.image;
+
+option java_multiple_files = true;
+option java_package = "kz.novelty.grpc.image";
+
+
+// The greeting service definition.
+service ImageScaler {
+    // scale binary image to binary out
+    rpc scale (ScaleRequest) returns (ScaleResponse) {}
+    // scales binary image and return image url on Amazaon S3
+    rpc scaleUrl (ScaleRequest) returns (ScaleUrlResponse) {}
+    // scales binary and queuing to Kaffka server,
+    // returns guid used by getScaledUrl to check status
+    rpc scaleQueue (ScaleRequest) returns (ScaleQueueResponse) {}
+    // checking status by guid gived by method scaleQueue
+    // raise not_found error if image not ready
+    // return image url on Amazon S3
+    rpc getScaledUrl (ScaledGuid) returns (ScaledImageUrl) {}
+}
+
+// binary image data
+message ScaleRequest {
+    string name = 1;// image file name, needed for further out image naming
+    bytes data = 2; //image binary data
+    repeated string scales = 3; //comma separated scales. Example: 0.5,0.2 or just 0.5
+}
+
+
+
+message ScaledImage {
+    string name = 1;//scaled image name
+    bytes data = 2;//scaled image binary data
+}
+
+message ScaledImageUrl {
+    string name = 1;//scaled image name
+    string url = 2;//Scaled image url on Amazon S3
+    string altUrl = 3;//Scaled image alternate url on Amazon S3
+}
+
+message ScaledImageQueue {
+    string name = 1;//image file name
+    string guid = 2;//guid for checking status
+}
+
+
+
+message ScaleResponse {
+    string message = 1; //string "done" if ok
+    repeated ScaledImage images = 2;
+}
+
+message ScaleUrlResponse {
+    string message = 1;//string "done" if ok
+    repeated ScaledImageUrl urls = 2;
+}
+message ScaleQueueResponse {
+    string message = 1;//string "done" if ok
+    repeated ScaledImageQueue queue = 2;
+}
+
+
+
+// request for cheching queued scale status
+message ScaledGuid {
+    string guid = 1;
+}
