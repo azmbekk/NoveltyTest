@@ -150,6 +150,7 @@ class ImageActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+
     private fun enableUI(enable: Boolean){
         bt_scale.isEnabled = enable
         bt_get_url.isEnabled = enable

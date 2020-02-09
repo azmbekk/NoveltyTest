@@ -42,6 +42,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         Log.i(TAG, "start ImageActivity")
-        applicationContext.startActivity(intent)
+        startActivity(intent)
     }
 }
